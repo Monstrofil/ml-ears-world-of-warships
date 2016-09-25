@@ -1,26 +1,7 @@
 package
 {
-    import com.adobe.images.PNGEncoder;
-    import com.junkbyte.console.Cc;
-    import flash.display.BitmapData;
-    import flash.display.BlendMode;
-    import flash.display.DisplayObjectContainer;
-    import flash.display.PNGEncoderOptions;
-    import flash.display.Shape;
-    import flash.display.Sprite;
-    import flash.events.Event;
-    import flash.events.TimerEvent;
-    import flash.geom.Matrix;
-    import flash.geom.Rectangle;
     import flash.text.Font;
-    import flash.text.TextField;
-    import flash.utils.ByteArray;
-    import flash.utils.Timer;
-    import lesta.data.GameDelegate;
-    import lesta.utils.DisplayObjectUtils;
     import MLModels.MLWebInfoHolder;
-    import mx.utils.Base64Encoder;
-    
     /**
      * ...
      * @author Monstrofil
@@ -41,11 +22,7 @@ package
             var statsHolder:MLWebInfoHolder = MLWebInfoHolder.instance;
             
             this.addChild(new MLEarsApplication());
-            
         }
-        
-        
-    
     }
     
 }
