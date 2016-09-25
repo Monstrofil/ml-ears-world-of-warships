@@ -184,8 +184,8 @@
         </block>
         
         <bind name="var" value="{wasVisible:false}"/>
-        <bind name="watchDH" value="'visible'; ['playerInfo.visibility.evChanged']; playerInfo.visibility.visible"/>
-        <bind name="watchDH" value="'wasVisible'; ['playerInfo.visibility.evChanged']; playerInfo.visibility.visible || wasVisible "/>
+        <bind name="watchDH" value="'visible'; ['playerInfo.visibility.evChanged']; playerInfo.visibility.mapVisible"/>
+        <bind name="watchDH" value="'wasVisible'; ['playerInfo.visibility.evChanged']; playerInfo.visibility.mapVisible || wasVisible "/>
         
         <block type="text">
             <bind name="text" value="statistics.all_rate"/>
@@ -279,8 +279,8 @@
         <bind name="style" value="'marginLeft'; (showStatistics &amp;&amp; statistics.real_data) ? '0' : '70px'"/>
             
         <bind name="var" value="{wasVisible:false}"/>
-        <bind name="watchDH" value="'visible'; ['playerInfo.visibility.evChanged']; playerInfo.visibility.visible"/>
-        <bind name="watchDH" value="'wasVisible'; ['playerInfo.visibility.evChanged']; playerInfo.visibility.visible || wasVisible "/>
+        <bind name="watchDH" value="'visible'; ['playerInfo.visibility.evChanged']; playerInfo.visibility.mapVisible"/>
+        <bind name="watchDH" value="'wasVisible'; ['playerInfo.visibility.evChanged']; playerInfo.visibility.mapVisible || wasVisible "/>
             
         <block type="text">
             <style>
