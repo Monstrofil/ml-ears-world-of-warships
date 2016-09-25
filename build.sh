@@ -8,4 +8,7 @@ python prebuild.py
 
 mkdir -p $BUILD_DIR
 /home/monstrofil/dev/flash/flex/bin/mxmlc -load-config+=$PROJECT.xml -omit-trace-statements -warnings=false -debug=false -incremental=true -swf-version=12 -o $BUILD_DIR.swf
-python file_divide.py config/__background.xml $BUILD_DIR root_block
+python file_divide.py config/__background.xml $BUILD_DIR/ root_block
+
+cd build
+ls -l
