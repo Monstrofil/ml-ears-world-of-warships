@@ -1,0 +1,172 @@
+<block className="ML_RowRendererLeft">         
+        <bind name="entityDH" value="'playerInfo'; id"/>
+        <bind name="watchDH" value="'is_self'; ['playerInfo.relation.evChanged']; playerInfo.relation.value == 0"/>
+        <bind name="watchDH" value="'is_alive'; ['playerInfo.avatar.evKilled']; playerInfo.avatar.isAlive"/>
+        <bind name="watchDH" value="'tkStatus'; ['playerInfo.avatar.evTeamkillStatusChanged']; playerInfo.avatar.tkStatus"/>
+        <bind name="watchDH" value="'division'; ['playerInfo.avatar.evDivisionChanged']; playerInfo.avatar.division"/>
+        <bind name="watchDH" value="'isInSameDivision'; ['playerInfo.avatar.evDivisionChanged']; playerInfo.avatar.isInSameDivision"/>
+        <bind name="watchDH" value="'divisionSign'; ['playerInfo.avatar.evDivisionChanged']; playerInfo.avatar.divisionSign"/>
+        <bind name="watchDH" value="'statistics'; ['playerInfo.statistics.evChanged']; playerInfo.statistics.statistics"/>
+        <bind name="watchDH" value="'shipInfo'; ['playerInfo.shipInfo.evChanged']; playerInfo.shipInfo.shipInfo"/>
+        <bind name="watchDH" value="'flags'; ['playerInfo.target.evChanged']; playerInfo.target.flags"/>
+        
+        <bind name="clickSplit"/> <!-- for left_click -->
+        <bind name="call" value="'left_click'; 'camera.moveCameraToPlayer'; playerInfo.avatar.id"/>
+        
+        <bind name="var" value="{healthP:'100%'}"/>
+        <bind name="watchDH" value="'healthP'; ['playerInfo.health.evValueChanged']; (((playerInfo.health.value &gt; 0) &amp;&amp; is_alive &amp;&amp; visible) ? ((100 * playerInfo.health.value / playerInfo.health.max) + '%'): ( is_alive ? healthP: '0%'))"/>
+        <bind name="dataRefDH" value="'ship'; 'playerInfo.avatar.ship.ref.ship'"/>
+        
+        <block className="HealthRowHolder">
+            <style>
+                <width value="100%"/>
+                <height value="100%"/>
+                <position value="absolute"/>
+            </style>
+            <bind name="style" value="'marginRight'; (showStatistics &amp;&amp; statistics.real_data) ? '70px' : '0px'"/>
+            
+            <block className="HealthRow">
+                <style>
+                    <width value="100%"/>
+                    <height value="100%"/>
+                    <blurFilter value="2 2"/>
+                    <position value="absolute"/>
+                </style>
+                <bind name="style" value="'width'; healthP"/>
+                <bind name="style" value="'backgroundColor'; '0x4032CD32'"/>
+            </block>
+        </block>
+        
+        <block>
+            <styleClass value="$MiddleVAligned"/>
+            <style>
+                <width value="25px"/> 
+            </style>
+            <block className="division_item" type="native">
+                <bind name="visible" value="division &gt; 0"/>
+                <styleClass value="$MiddleAligned"/>
+                <style>
+                    <top value="2px"/>
+                </style>
+                <bind name="gotoAndStop!" value="isInSameDivision ? divisionSign + 1 : divisionSign + 1 + 10"/>
+            </block>
+        </block>
+            
+        
+
+        <block type="text">
+            <bind name="text" value="playerInfo.avatar.name"/>
+            <bind name="visible" value="earIndex"/>
+            <styleClass value="$FontSizeML"/>
+            
+            <bind name="style" value="'textColor'; ('0x'+statistics.all_wins_color)"/>
+            <!--<bind name="class" value="is_alive 	? (tkStatus	? '$FontColorTeamkiller': is_self || isInSameDivision ? '$FontColorGolden': '$None'): '$FontColorDead'"/>-->
+            
+            <style>
+                <width value="55px"/>
+                <marginLeft value="10px"/>
+            </style>
+        </block>
+        <block type="text">
+            <bind name="text" value="ship.nameUpper"/>
+            <styleClass value="$FontSizeML"/>
+            <bind name="class" value="'$Bold'"/>
+            
+            <bind name="class" value="is_alive  ? (tkStatus ? '$FontColorTeamkiller': is_self || isInSameDivision ? '$FontColorGolden': '$None'): '$FontColorDead'"/>
+            
+            <style>
+                <width value="65px"/>
+                <marginLeft value="5px"/>
+            </style>
+        </block>
+        <block type="text">
+            <bind name="text" value="ship.levelRome"/>
+            <styleClass value="$FontSizeML"/>
+            
+            <bind name="class" value="is_alive  ? (tkStatus ? '$FontColorTeamkiller': is_self || isInSameDivision ? '$FontColorGolden': '$None'): '$FontColorDead'"/>
+            
+            <style>
+                <width value="20px"/>
+                <marginLeft value="5px"/>
+            </style>
+        </block>
+        
+        
+        <block type="text">
+            <bind name="text" value="ship.subtype=='Destroyer'?'3':ship.subtype=='Cruiser'?'2':ship.subtype=='Battleship'?'1':'0'"/>
+            <styleClass value="$TextDefault"/>
+            <bind name="class" value="is_alive  ? (tkStatus ? '$FontColorTeamkiller': is_self || isInSameDivision ? '$FontColorGolden': '$None'): '$FontColorDead'"/>
+            
+            <style>
+                <width value="20"/>
+                <fontFamily value="ML_WOWSSymbol"/>
+                <marginLeft value="5px"/>
+            </style>
+        </block>
+        
+        <bind name="watchDH" value="'frags'; ['playerInfo.avatar.evFragsChanged']; playerInfo.avatar.frags"/>
+        <block type="text">
+            <bind name="text" value="frags"/>
+            <styleClass value="$FontSizeML"/>
+            
+            <bind name="class" value="is_alive  ? (tkStatus ? '$FontColorTeamkiller': is_self || isInSameDivision ? '$FontColorGolden': '$None'): '$FontColorDead'"/>
+            
+            <style>
+                <width value="15px"/>
+                <marginLeft value="5px"/>
+            </style>
+        </block>
+        
+        <bind name="var" value="{wasVisible:false}"/>
+        <bind name="watchDH" value="'visible'; ['playerInfo.visibility.evChanged']; playerInfo.visibility.visible"/>
+        <bind name="watchDH" value="'wasVisible'; ['playerInfo.visibility.evChanged']; playerInfo.visibility.visible || wasVisible "/>
+        
+        <block type="text">
+            <bind name="text" value="statistics.all_rate"/>
+            <bind name="style" value="'textColor'; ('0x'+statistics.all_rate_color)"/>
+            <bind name="visible" value="showStatistics &amp;&amp; statistics.real_data"/>
+            <bind name="class" value="'$Bold'"/>
+            
+            <styleClass value="$FontSizeML"/>
+            <style>
+                <marginLeft value="5px"/>
+                <width value="30px"/>
+                <dropShadowFilter value="1 90 0x08222a 0.7 2.0 2.0 1.0 2"/>
+            </style>
+        </block>
+            
+        <block type="text">
+            <style>
+                <textColor value="0xFF0404"/>
+                <marginLeft value="5px"/>
+                <width value="30px"/>
+                <dropShadowFilter value="1 90 0x08222a 0.7 2.0 2.0 1.0 2"/>
+            </style>
+            
+            <styleClass value="$FontSizeML"/>
+            <bind name="class" value="'$Bold'"/>
+            <bind name="style" value="'textColor'; ('0x'+statistics.all_wins_color)"/>
+            <bind name="text" value="statistics.all_wins + '%'"/>
+            <bind name="visible" value="showStatistics &amp;&amp; statistics.real_data"/>
+            
+        </block>
+        
+        <bind name="visible" value="is_alive ? true: deadEnabled"/>
+        <bind name="alpha" value="(!is_alive)?0.7:1"/>
+            
+        <bind name="watchDH" value="'player'; ['playerInfo.player.evChanged']; playerInfo.player.playerInfo"/>
+        <bind name="watchDH" value="'mute'; ['playerInfo.avatar.evMuteChanged']; playerInfo.avatar.mute"/>
+            
+        <bind name="style" value="'hitTest'; true"/>
+        <bind name="tooltip" value="'ML_MouseInstructionTooltip'; { _mouseInstructions: [{_type: 'left', _instructionText: 'IDS_HELP_DEAD_AHEAD_CAMERA'}, {_type: 'right', _instructionText: 'IDS_HINT_CLICK_TO_COMPLAIN'}], _maxWidth: 250}"/>
+        <bind name="menu" value="'ML_ComplaintMenu'; { _nickname: player.name, _mute: mute, _playerId: player.id, _isInSameDivision: isInSameDivision, _battleType: gameInfo.battleType }; null; 'contextMenuVisible'"/>
+        <bind name="dispatch" value="'buttonClick'; 'Tooltip.Close'; {}"/>
+        <bind name="name" value="'contextMenuVisible_' + !!(contextMenuVisible) + '_' + avatar.name"/>
+            
+        <style>
+            <marginBottom value="1px"/>
+            <flow value="horizontal"/>
+            <height value="22px"/>
+        </style>
+        
+    </block>

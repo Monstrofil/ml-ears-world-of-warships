@@ -1,0 +1,14 @@
+<block className="LeftEar">
+            <style>
+                <position value="absolute"/>
+            </style>
+            <bind name="watch" value="'deadEnabled'; (userPrefs.elementsGroupExpand.deadEnabled == null) ? true : userPrefs.elementsGroupExpand.deadEnabled "/>
+            <bind name="watch" value="'earsEnabled'; (userPrefs.elementsGroupExpand.earsEnabled == null) ? true : userPrefs.elementsGroupExpand.earsEnabled "/>
+            <bind name="visible" value="earsEnabled &amp;&amp; !(camera.isTactical)"/>
+            <bind name="watch" value="'indexEars'; (userPrefs.elementsGroupExpand.indexEars == null) ? false : userPrefs.elementsGroupExpand.indexEars"/>
+            <bind name="watch" value="'earsStatisticsEnabled'; (userPrefs.elementsGroupExpand.earsStatisticsEnabled == null) ? true : userPrefs.elementsGroupExpand.earsStatisticsEnabled "/>
+            <bind name="repeat" value="team; 'ML_RowRendererLeft'; {earIndex:indexEars, showStatistics:earsStatisticsEnabled, deadEnabled:deadEnabled}"/>
+            <style>
+                <top value="75px"/>
+            </style>
+        </block>

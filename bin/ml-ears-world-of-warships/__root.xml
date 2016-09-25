@@ -1,0 +1,34 @@
+<?xml version="1.0" ?><ui>
+    <xmlpath value="ml-ears-world-of-warships/ml_css_$TextDefault.xml"/>
+    
+    <xmlpath value="ml-ears-world-of-warships/ml_css_$FontSizeML.xml"/>
+    
+    <xmlpath value="ml-ears-world-of-warships/ml_css_$FontColorDead.xml"/>
+    
+    <block className="root_block">
+        <bind name="watch" value="'indexEars'; (userPrefs.elementsGroupExpand.indexEars == null) ? false : userPrefs.elementsGroupExpand.indexEars"/>
+        <bind name="controller" value="MLControllers.MLEntitiesController"/>        
+        
+        <xmlpath value="ml-ears-world-of-warships/ml_block_root_block_LeftEar.xml"/>
+        
+        <xmlpath value="ml-ears-world-of-warships/ml_block_root_block_RightEar.xml"/>
+    </block>
+    
+    
+    <xmlpath value="ml-ears-world-of-warships/ml_block_ui_ML_RowRendererLeft.xml"/>
+    
+    <xmlpath value="ml-ears-world-of-warships/ml_block_ui_ML_RowRendererRight.xml"/>
+    
+    
+    <!-- MENU -->
+     <xmlpath value="ml-ears-world-of-warships/ml_block_ui_ML_ComplaintMenu.xml"/>
+    
+    <xmlpath value="ml-ears-world-of-warships/ml_block_ui_ML_ComplaintSubMenu.xml"/>
+	<xmlpath value="ml-ears-world-of-warships/ml_block_ui_ML_PraiseSubMenu.xml"/>
+    
+    <xmlpath value="ml-ears-world-of-warships/ml_block_ui_ML_MenuTooltipBackground.xml"/>
+            
+    <xmlpath value="ml-ears-world-of-warships/ml_block_ui_ML_MouseInstructionTooltip.xml"/>
+            
+    <xmlpath value="ml-ears-world-of-warships/ml_block_ui_ML_TooltipBackground.xml"/>
+</ui>

@@ -1,0 +1,108 @@
+<block className="ML_ComplaintMenu">
+		<bind name="controller" value="lesta.unbound.core.UbController"/>
+		<bind name="controller" value="lesta.dialogs.controllers.EntitySingletonController; 'evaluationLimits'"/>
+		<styleClass value="$DefaultMenuBehaviour"/>
+		<styleClass value="$ContextMenuDimentions"/>
+		<block>
+			<styleClass value="$FullsizeAbsolute"/>
+			<bind name="instance" value="'ML_MenuTooltipBackground'; {_isInBattle : (_nickname!=null)}"/>
+		</block>
+		<block>
+			<style>
+				<width value="100%"/>
+			</style>
+			<bind name="class" value="true ? '$ComplaintMenuListItemBattleMargins' : '$ComplaintMenuListItemPostbarrleMargins'"/>
+			<block>
+				<bind name="name" value="'id_complain'"/>
+				<styleClass value="$ContextMenuListItem"/>
+				<block className="MenuItem">
+					<styleClass value="$Fullsize"/>
+					<block className="dock_submenu_item" type="native">
+						<styleClass value="$FullsizeAbsolute"/>
+					</block>
+					<block type="text">
+						<styleClass value="$TextDefault"/>
+						<styleClass value="$MiddleVAligned"/>
+						<styleClass value="$ContextMenuListItemContent"/>
+						<bind name="text" value="'IDS_COMPLAIN'"/>
+					</block>
+				</block>
+				<block className="button_expand_h" type="native">
+					<style>
+						<position value="absolute"/>
+						<right value="6px"/>
+					</style>
+					<styleClass value="$MouseDisable"/>
+					<styleClass value="$MiddleVAligned"/>
+				</block>
+				<bind name="tooltip" value="'ML_ComplaintSubMenu'; {_player: _player, _nickname: _nickname, arenaId: arenaId, _battleType: _battleType, _isInSameDivision: _isInSameDivision}; TooltipBehaviour.submenu"/>
+			</block>
+			<block>
+				<bind name="name" value="'id_praise'"/>
+				<styleClass value="$ContextMenuListItem"/>
+				<block className="MenuItem">
+					<styleClass value="$Fullsize"/>
+					<block className="dock_submenu_item" type="native">
+						<styleClass value="$FullsizeAbsolute"/>
+					</block>
+					<block type="text">
+						<styleClass value="$TextDefault"/>
+						<styleClass value="$MiddleVAligned"/>
+						<styleClass value="$ContextMenuListItemContent"/>
+						<bind name="text" value="'IDS_PRAISE'"/>
+					</block>
+				</block>
+				<block className="button_expand_h" type="native">
+					<style>
+						<position value="absolute"/>
+						<right value="6px"/>
+					</style>
+					<styleClass value="$MouseDisable"/>
+					<styleClass value="$MiddleVAligned"/>
+				</block>
+				<bind name="tooltip" value="'ML_PraiseSubMenu'; {_player: _player, _nickname: _nickname, arenaId: arenaId, _battleType: _battleType, _isInSameDivision: _isInSameDivision}; TooltipBehaviour.submenu"/>
+			</block>
+			<block>
+				<bind name="name" value="'id_mute'"/>
+				<bind name="visible" value="!_isInBattleStats"/>
+				<styleClass value="$ContextMenuListItem"/>
+				<block>
+					<styleClass value="$Fullsize"/>
+					<block className="dock_submenu_item" type="native">
+						<styleClass value="$FullsizeAbsolute"/>
+					</block>
+				</block>
+				<block>
+					<style>
+						<hitTest value="false"/>
+					</style>
+					<styleClass value="$FullsizeAbsolute"/>
+					<block>
+						<style>
+							<width value="24px"/>
+							<height value="100%"/>
+						</style>
+						<block className="button_mute" type="native">
+							<style>
+								<marginLeft value="4px"/>
+								<marginTop value="6px"/>
+							</style>
+							<bind name="gotoAndStop!" value="_mute ? 'selected_up' : 'selected_over'"/>
+						</block>
+					</block>
+					<block type="text">
+						<style>
+							<marginLeft value="5px"/>
+						</style>
+						<styleClass value="$TextDefault"/>
+						<styleClass value="$MiddleVAligned"/>
+						<bind name="text" value="_mute ? 'IDS_UNMUTE' : 'IDS_MUTE'"/>
+					</block>
+					<style>
+						<flow value="horizontal"/>
+					</style>
+				</block>
+				<bind name="action" value="'buttonClick'; _mute ? 'unmuteUser' : 'muteUser'; {id: _playerId}"/>
+			</block>
+		</block>
+	</block>

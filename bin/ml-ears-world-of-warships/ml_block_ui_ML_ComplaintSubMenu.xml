@@ -1,0 +1,124 @@
+<block className="ML_ComplaintSubMenu">
+		<bind name="controller" value="lesta.dialogs.controllers.EntitySingletonController; 'evaluationLimits'"/>
+		<styleClass value="$DefaultMenuBehaviour"/>
+		<style>
+			<width value="270px"/>
+		</style>
+		<bind name="watch" value="'isEvaluationDisabledReason'; (_battleType == BattleTypes.CLUB_BATTLE) ? 'IDS_COMPLAIN_DISABLED_FOR_CLUB_BATTLES' :            (_battleType == BattleTypes.TRAINING_BATTLE) ? 'IDS_CUSTOM_ROOM' :                evaluationLimits.complain == 0  ? 'IDS_DAY_LIMIT_IS_OFF' :                   _isInSameDivision  ? 'IDS_COMPLAIN_DISABLED_FOR_DIVISION_MEMBERS'                        : false"/>
+		<block>
+			<styleClass value="$FullsizeAbsolute"/>
+			<bind name="instance" value="'ML_MenuTooltipBackground'; {_isInBattle : (_nickname != null)}"/>
+		</block>
+		<block>
+			<style>
+				<width value="100%"/>
+			</style>
+			<bind name="class" value="(_nickname!=null) ? '$ComplaintMenuListItemBattleMargins' : '$ComplaintMenuListItemPostbarrleMargins'"/>
+			<block>
+				<bind name="name" value="'id_complain_bot'"/>
+				<bind name="style" value="'alpha'; isEvaluationDisabledReason ? 0.5 : 1"/>
+				<styleClass value="$ContextMenuListItem"/>
+				<bind name="action" value="'buttonClick'; 'sendEvaluation'; (_nickname != null)  ? {type: EvaluationType.DENUNCIATION, topic: EvaluationTopic.BOT, nickname: _nickname, arenaId: arenaId}                     : {type: EvaluationType.DENUNCIATION, topic: EvaluationTopic.BOT, accountDBID: _player.dbId, relation: _player.relation, arenaId: arenaId}"/>
+				<block className="dock_submenu_item" type="native">
+					<bind name="style" value="'hitTest'; isEvaluationDisabledReason ? false : true"/>
+					<styleClass value="$FullsizeAbsolute"/>
+				</block>
+				<block type="text">
+					<styleClass value="$TextDefault"/>
+					<styleClass value="$MiddleVAligned"/>
+					<style>
+						<maxWidth value="252"/>
+						<marginLeft value="6px"/>
+					</style>
+					<text value="IDS_BOT"/>
+				</block>
+			</block>
+			<block>
+				<bind name="name" value="'id_complain_bad_player'"/>
+				<bind name="style" value="'alpha'; isEvaluationDisabledReason ? 0.5 : 1"/>
+				<styleClass value="$ContextMenuListItem"/>
+				<bind name="action" value="'buttonClick'; 'sendEvaluation'; (_nickname != null)  ? {type: EvaluationType.DENUNCIATION, topic: EvaluationTopic.PLAY, nickname: _nickname, arenaId: arenaId}                     : {type: EvaluationType.DENUNCIATION, topic: EvaluationTopic.PLAY, accountDBID: _player.dbId, relation: _player.relation, arenaId: arenaId}"/>
+				<block className="dock_submenu_item" type="native">
+					<bind name="style" value="'hitTest'; isEvaluationDisabledReason ? false : true"/>
+					<styleClass value="$FullsizeAbsolute"/>
+				</block>
+				<block type="text">
+					<styleClass value="$TextDefault"/>
+					<styleClass value="$MiddleVAligned"/>
+					<style>
+						<maxWidth value="252"/>
+						<marginLeft value="6px"/>
+					</style>
+					<text value="IDS_BAD_PLAYER"/>
+				</block>
+			</block>
+			<block>
+				<bind name="name" value="'id_complain_bad_behaviour'"/>
+				<bind name="style" value="'alpha'; isEvaluationDisabledReason ? 0.5 : 1"/>
+				<styleClass value="$ContextMenuListItem"/>
+				<bind name="action" value="'buttonClick'; 'sendEvaluation'; (_nickname != null)  ? {type: EvaluationType.DENUNCIATION, topic: EvaluationTopic.CHAT, nickname: _nickname, arenaId: arenaId}                     : {type: EvaluationType.DENUNCIATION, topic: EvaluationTopic.CHAT, accountDBID: _player.dbId, relation: _player.relation, arenaId: arenaId}"/>
+				<block className="dock_submenu_item" type="native">
+					<bind name="style" value="'hitTest'; isEvaluationDisabledReason ? false : true"/>
+					<styleClass value="$FullsizeAbsolute"/>
+				</block>
+				<block type="text">
+					<styleClass value="$TextDefault"/>
+					<styleClass value="$MiddleVAligned"/>
+					<style>
+						<maxWidth value="252"/>
+						<marginLeft value="6px"/>
+					</style>
+					<text value="IDS_BAD_BEHAVIOUR"/>
+				</block>
+			</block>
+		</block>
+		<block>
+			<bind name="name" value="'id_complain_day_limit'"/>
+			<bind name="visible" value="evaluationLimits.complain &gt; 0 &amp;&amp; !isEvaluationDisabledReason"/>
+			<style>
+				<marginLeft value="9px"/>
+				<marginBottom value="6px"/>
+			</style>
+			<block className="icon_warning_orange" type="native">
+				<style>
+					<marginTop value="4px"/>
+				</style>
+			</block>
+			<block type="text">
+				<styleClass value="$TextDefault"/>
+				<bind name="class" value="'$FontColorUnready'"/>
+				<style>
+					<maxWidth value="252"/>
+					<marginLeft value="1px"/>
+				</style>
+				<bind name="text" value="tr('IDS_DAY_LIMIT') + ' ' + evaluationLimits.complain"/>
+			</block>
+			<style>
+				<flow value="horizontal"/>
+			</style>
+		</block>
+		<block>
+			<bind name="visible" value="isEvaluationDisabledReason"/>
+			<style>
+				<marginLeft value="9px"/>
+				<marginBottom value="6px"/>
+			</style>
+			<block className="icon_warning_red" type="native">
+				<style>
+					<marginTop value="4px"/>
+				</style>
+			</block>
+			<block type="text">
+				<styleClass value="$TextDefault"/>
+				<bind name="class" value="'$FontColorCompareNegative'"/>
+				<style>
+					<maxWidth value="230"/>
+					<marginLeft value="1px"/>
+				</style>
+				<bind name="text" value="isEvaluationDisabledReason"/>
+			</block>
+			<style>
+				<flow value="horizontal"/>
+			</style>
+		</block>
+	</block>

@@ -1,0 +1,105 @@
+<block className="ML_PraiseSubMenu">
+		<bind name="controller" value="lesta.dialogs.controllers.EntitySingletonController; 'evaluationLimits'"/>
+		<styleClass value="$DefaultMenuBehaviour"/>
+		<style>
+			<width value="270px"/>
+		</style>
+		<bind name="watch" value="'isEvaluationDisabledReason'; (_battleType == BattleTypes.CLUB_BATTLE) ? 'IDS_PRAISE_DISABLED_FOR_CLUB_BATTLES' :            (_battleType == BattleTypes.TRAINING_BATTLE) ? 'IDS_CUSTOM_ROOM' :                 evaluationLimits.praise == 0  ? 'IDS_DAY_LIMIT_IS_OFF' :                   _isInSameDivision  ? 'IDS_PRAISE_DISABLED_FOR_DIVISION_MEMBERS'                        : false"/>
+		<block>
+			<styleClass value="$FullsizeAbsolute"/>
+			<bind name="instance" value="'ML_MenuTooltipBackground'; {_isInBattle : false}"/>
+		</block>
+		<block>
+			<style>
+				<width value="100%"/>
+			</style>
+			<bind name="class" value="(_nickname!=null) ? '$ComplaintMenuListItemBattleMargins' : '$ComplaintMenuListItemPostbarrleMargins'"/>
+			<block>
+				<bind name="name" value="'id_praise_good_player'"/>
+				<bind name="style" value="'alpha'; isEvaluationDisabledReason ? 0.5 : 1"/>
+				<bind name="action" value="'buttonClick'; 'sendEvaluation'; (_nickname != null)  ? {type: EvaluationType.PRAISE, topic: EvaluationTopic.PLAY, nickname: _nickname, arenaId: arenaId}                     : {type: EvaluationType.PRAISE, topic: EvaluationTopic.PLAY, accountDBID: _player.dbId, relation: _player.relation, arenaId: arenaId}"/>
+				<styleClass value="$ContextMenuListItem"/>
+				<block className="dock_submenu_item" type="native">
+					<bind name="style" value="'hitTest'; isEvaluationDisabledReason ? false : true"/>
+					<styleClass value="$FullsizeAbsolute"/>
+				</block>
+				<block type="text">
+					<styleClass value="$TextDefault"/>
+					<styleClass value="$MiddleVAligned"/>
+					<style>
+						<maxWidth value="252"/>
+						<marginLeft value="6px"/>
+					</style>
+					<text value="IDS_GOOD_PLAYER"/>
+				</block>
+			</block>
+			<block>
+				<bind name="name" value="'id_praise_helped_in_chat'"/>
+				<bind name="style" value="'alpha'; isEvaluationDisabledReason ? 0.5 : 1"/>
+				<bind name="action" value="'buttonClick'; 'sendEvaluation'; (_nickname != null)  ? {type: EvaluationType.PRAISE, topic: EvaluationTopic.CHAT, nickname: _nickname, arenaId: arenaId}                     : {type: EvaluationType.PRAISE, topic: EvaluationTopic.CHAT, accountDBID: _player.dbId, relation: _player.relation, arenaId: arenaId}"/>
+				<styleClass value="$ContextMenuListItem"/>
+				<block className="dock_submenu_item" type="native">
+					<bind name="style" value="'hitTest'; isEvaluationDisabledReason ? false : true"/>
+					<styleClass value="$FullsizeAbsolute"/>
+				</block>
+				<block type="text">
+					<styleClass value="$TextDefault"/>
+					<styleClass value="$MiddleVAligned"/>
+					<style>
+						<maxWidth value="252"/>
+						<marginLeft value="6px"/>
+					</style>
+					<text value="IDS_HELPED_IN_CHAT"/>
+				</block>
+			</block>
+		</block>
+		<block>
+			<bind name="name" value="'id_praise_day_limit'"/>
+			<bind name="visible" value="evaluationLimits.praise &gt; 0 &amp;&amp; !isEvaluationDisabledReason"/>
+			<style>
+				<marginLeft value="9px"/>
+				<marginBottom value="6px"/>
+			</style>
+			<block className="icon_warning_orange" type="native">
+				<style>
+					<marginTop value="4px"/>
+				</style>
+			</block>
+			<block type="text">
+				<styleClass value="$TextDefault"/>
+				<bind name="class" value="'$FontColorUnready'"/>
+				<style>
+					<maxWidth value="252"/>
+					<marginLeft value="1px"/>
+				</style>
+				<bind name="text" value="tr('IDS_DAY_LIMIT') + ' ' + evaluationLimits.praise"/>
+			</block>
+			<style>
+				<flow value="horizontal"/>
+			</style>
+		</block>
+		<block>
+			<bind name="visible" value="isEvaluationDisabledReason"/>
+			<style>
+				<marginLeft value="9px"/>
+				<marginBottom value="6px"/>
+			</style>
+			<block className="icon_warning_red" type="native">
+				<style>
+					<marginTop value="4px"/>
+				</style>
+			</block>
+			<block type="text">
+				<styleClass value="$TextDefault"/>
+				<bind name="class" value="'$FontColorCompareNegative'"/>
+				<style>
+					<maxWidth value="230"/>
+					<marginLeft value="1px"/>
+				</style>
+				<bind name="text" value="isEvaluationDisabledReason"/>
+			</block>
+			<style>
+				<flow value="horizontal"/>
+			</style>
+		</block>
+	</block>

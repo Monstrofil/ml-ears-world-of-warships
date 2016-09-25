@@ -1,0 +1,862 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui>
+    <css name="$TextDefault">
+		<fontFamily value="$WWSDefaultFont"/>
+		<mouseEnabled value="false"/>
+		<mouseChildren value="false"/>
+		<fontSize value="15"/>
+		<dropShadowFilter value="1 90 0x08222a 0.5 2.0 2.0 1.0 2"/>
+		<selectable value="false"/>
+        <multiline value="false"/>
+		<textColor value="0xEEEEEE"/>
+	</css>
+    
+    <css name="$FontSizeML">
+        <fontFamily value="$WWSDefaultFont"/>
+		<mouseEnabled value="false"/>
+		<mouseChildren value="false"/>
+		<fontSize value="13"/>
+		<dropShadowFilter value="1 90 0x08222a 0.5 2.0 2.0 1.0 2"/>
+		<selectable value="false"/>
+		<textColor value="0xEEEEEE"/>
+        <multiline value="false"/>
+	</css>
+    
+    <css name="$FontColorDead">
+        <textColor value="0x5F5F5F"/>
+    </css>
+    
+    <block className="root_block">
+        <bind name="watch" value="'indexEars'; (userPrefs.elementsGroupExpand.indexEars == null) ? false : userPrefs.elementsGroupExpand.indexEars"/>
+        <bind name="controller" value="MLControllers.MLEntitiesController"/>        
+        
+        <block className="LeftEar">
+            <style>
+                <position value="absolute"/>
+            </style>
+            <bind name="watch" value="'deadEnabled'; (userPrefs.elementsGroupExpand.deadEnabled == null) ? true : userPrefs.elementsGroupExpand.deadEnabled "/>
+            <bind name="watch" value="'earsEnabled'; (userPrefs.elementsGroupExpand.earsEnabled == null) ? true : userPrefs.elementsGroupExpand.earsEnabled "/>
+            <bind name="visible" value="earsEnabled &amp;&amp; !(camera.isTactical)"/>
+            <bind name="watch" value="'indexEars'; (userPrefs.elementsGroupExpand.indexEars == null) ? false : userPrefs.elementsGroupExpand.indexEars"/>
+            <bind name="watch" value="'earsStatisticsEnabled'; (userPrefs.elementsGroupExpand.earsStatisticsEnabled == null) ? true : userPrefs.elementsGroupExpand.earsStatisticsEnabled "/>
+            <bind name="repeat" value="team; 'ML_RowRendererLeft'; {earIndex:indexEars, showStatistics:earsStatisticsEnabled, deadEnabled:deadEnabled}"/>
+            <style>
+                <top value="75px"/>
+            </style>
+        </block>
+        
+        <block className="RightEar">
+            <style>
+                <position value="absolute"/>
+            </style>
+            <bind name="watch" value="'earsEnabled'; (userPrefs.elementsGroupExpand.earsEnabled == null) ? true : userPrefs.elementsGroupExpand.earsEnabled "/>
+            <bind name="watch" value="'deadEnabled'; (userPrefs.elementsGroupExpand.deadEnabled == null) ? true : userPrefs.elementsGroupExpand.deadEnabled "/>
+            <bind name="visible" value="earsEnabled &amp;&amp; !(camera.isTactical)"/>
+            <bind name="watch" value="'indexEars'; (userPrefs.elementsGroupExpand.indexEars == null) ? false : userPrefs.elementsGroupExpand.indexEars"/>
+            <bind name="watch" value="'earsStatisticsEnabled'; (userPrefs.elementsGroupExpand.earsStatisticsEnabled == null) ? true : userPrefs.elementsGroupExpand.earsStatisticsEnabled "/>
+            <bind name="repeat" value="enemy; 'ML_RowRendererRight'; {earIndex:indexEars, showStatistics:earsStatisticsEnabled, deadEnabled:deadEnabled}"/>
+            <style>
+                <top value="75px"/>
+                <align value="right"/>
+                <right value="0"/>
+            </style>
+        </block>
+    </block>
+    
+    
+    <block className="ML_RowRendererLeft">         
+        <bind name="entityDH" value="'playerInfo'; id"/>
+        <bind name="watchDH" value="'is_self'; ['playerInfo.relation.evChanged']; playerInfo.relation.value == 0"/>
+        <bind name="watchDH" value="'is_alive'; ['playerInfo.avatar.evKilled']; playerInfo.avatar.isAlive"/>
+        <bind name="watchDH" value="'tkStatus'; ['playerInfo.avatar.evTeamkillStatusChanged']; playerInfo.avatar.tkStatus"/>
+        <bind name="watchDH" value="'division'; ['playerInfo.avatar.evDivisionChanged']; playerInfo.avatar.division"/>
+        <bind name="watchDH" value="'isInSameDivision'; ['playerInfo.avatar.evDivisionChanged']; playerInfo.avatar.isInSameDivision"/>
+        <bind name="watchDH" value="'divisionSign'; ['playerInfo.avatar.evDivisionChanged']; playerInfo.avatar.divisionSign"/>
+        <bind name="watchDH" value="'statistics'; ['playerInfo.statistics.evChanged']; playerInfo.statistics.statistics"/>
+        <bind name="watchDH" value="'shipInfo'; ['playerInfo.shipInfo.evChanged']; playerInfo.shipInfo.shipInfo"/>
+        <bind name="watchDH" value="'flags'; ['playerInfo.target.evChanged']; playerInfo.target.flags"/>
+        
+        <bind name="clickSplit"/> <!-- for left_click -->
+        <bind name="call" value="'left_click'; 'camera.moveCameraToPlayer'; playerInfo.avatar.id"/>
+        
+        <bind name="var" value="{healthP:'100%'}"/>
+        <bind name="watchDH" value="'healthP'; ['playerInfo.health.evValueChanged']; (((playerInfo.health.value > 0) &amp;&amp; is_alive &amp;&amp; visible) ? ((100 * playerInfo.health.value / playerInfo.health.max) + '%'): ( is_alive ? healthP: '0%'))"/>
+        <bind name="dataRefDH" value="'ship'; 'playerInfo.avatar.ship.ref.ship'"/>
+        
+        <block className="HealthRowHolder">
+            <style>
+                <width value="100%"/>
+                <height value="100%"/>
+                <position value="absolute"/>
+            </style>
+            <bind name="style" value="'marginRight'; (showStatistics &amp;&amp; statistics.real_data) ? '70px' : '0px'"/>
+            
+            <block className="HealthRow">
+                <style>
+                    <width value="100%"/>
+                    <height value="100%"/>
+                    <blurFilter value="2 2"/>
+                    <position value="absolute"/>
+                </style>
+                <bind name="style" value="'width'; healthP"/>
+                <bind name="style" value="'backgroundColor'; '0x4032CD32'"/>
+            </block>
+        </block>
+        
+        <block>
+            <styleClass value="$MiddleVAligned"/>
+            <style>
+                <width value="25px"/> 
+            </style>
+            <block className="division_item" type="native">
+                <bind name="visible" value="division &gt; 0"/>
+                <styleClass value="$MiddleAligned"/>
+                <style>
+                    <top value="2px"/>
+                </style>
+                <bind name="gotoAndStop!" value="isInSameDivision ? divisionSign + 1 : divisionSign + 1 + 10"/>
+            </block>
+        </block>
+            
+        
+
+        <block type="text">
+            <bind name="text" value="playerInfo.avatar.name"/>
+            <bind name="visible" value="earIndex"/>
+            <styleClass value="$FontSizeML"/>
+            
+            <bind name="style" value="'textColor'; ('0x'+statistics.all_wins_color)"/>
+            <!--<bind name="class" value="is_alive 	? (tkStatus	? '$FontColorTeamkiller': is_self || isInSameDivision ? '$FontColorGolden': '$None'): '$FontColorDead'"/>-->
+            
+            <style>
+                <width value="55px"/>
+                <marginLeft value="10px"/>
+            </style>
+        </block>
+        <block type="text">
+            <bind name="text" value="ship.nameUpper"/>
+            <styleClass value="$FontSizeML"/>
+            <bind name="class" value="'$Bold'"/>
+            
+            <bind name="class" value="is_alive 	? (tkStatus	? '$FontColorTeamkiller': is_self || isInSameDivision ? '$FontColorGolden': '$None'): '$FontColorDead'"/>
+            
+            <style>
+                <width value="65px"/>
+                <marginLeft value="5px"/>
+            </style>
+        </block>
+        <block type="text">
+            <bind name="text" value="ship.levelRome"/>
+            <styleClass value="$FontSizeML"/>
+            
+            <bind name="class" value="is_alive 	? (tkStatus	? '$FontColorTeamkiller': is_self || isInSameDivision ? '$FontColorGolden': '$None'): '$FontColorDead'"/>
+            
+            <style>
+                <width value="20px"/>
+                <marginLeft value="5px"/>
+            </style>
+        </block>
+        
+        
+        <block type="text">
+            <bind name="text" value="ship.subtype=='Destroyer'?'&#x33;':ship.subtype=='Cruiser'?'&#x32;':ship.subtype=='Battleship'?'&#x31;':'&#x30;'"/>
+            <styleClass value="$TextDefault"/>
+            <bind name="class" value="is_alive 	? (tkStatus	? '$FontColorTeamkiller': is_self || isInSameDivision ? '$FontColorGolden': '$None'): '$FontColorDead'"/>
+            
+            <style>
+                <width value="20"/>
+                <fontFamily value="ML_WOWSSymbol"/>
+                <marginLeft value="5px"/>
+            </style>
+        </block>
+        
+        <bind name="watchDH" value="'frags'; ['playerInfo.avatar.evFragsChanged']; playerInfo.avatar.frags"/>
+        <block type="text">
+            <bind name="text" value="frags"/>
+            <styleClass value="$FontSizeML"/>
+            
+            <bind name="class" value="is_alive 	? (tkStatus	? '$FontColorTeamkiller': is_self || isInSameDivision ? '$FontColorGolden': '$None'): '$FontColorDead'"/>
+            
+            <style>
+                <width value="15px"/>
+                <marginLeft value="5px"/>
+            </style>
+        </block>
+        
+        <bind name="var" value="{wasVisible:false}"/>
+        <bind name="watchDH" value="'visible'; ['playerInfo.visibility.evChanged']; playerInfo.visibility.visible"/>
+        <bind name="watchDH" value="'wasVisible'; ['playerInfo.visibility.evChanged']; playerInfo.visibility.visible || wasVisible "/>
+        
+        <block type="text">
+            <bind name="text" value="statistics.all_rate"/>
+            <bind name="style" value="'textColor'; ('0x'+statistics.all_rate_color)"/>
+            <bind name="visible" value="showStatistics &amp;&amp; statistics.real_data"/>
+            <bind name="class" value="'$Bold'"/>
+            
+            <styleClass value="$FontSizeML"/>
+            <style>
+                <marginLeft value="5px"/>
+                <width value="30px"/>
+                <dropShadowFilter value="1 90 0x08222a 0.7 2.0 2.0 1.0 2"/>
+            </style>
+        </block>
+            
+        <block type="text">
+            <style>
+                <textColor value="0xFF0404"/>
+                <marginLeft value="5px"/>
+                <width value="30px"/>
+                <dropShadowFilter value="1 90 0x08222a 0.7 2.0 2.0 1.0 2"/>
+            </style>
+            
+            <styleClass value="$FontSizeML"/>
+            <bind name="class" value="'$Bold'"/>
+            <bind name="style" value="'textColor'; ('0x'+statistics.all_wins_color)"/>
+            <bind name="text" value="statistics.all_wins + '%'"/>
+            <bind name="visible" value="showStatistics &amp;&amp; statistics.real_data"/>
+            
+        </block>
+        
+        <bind name="visible" value="is_alive ? true: deadEnabled"/>
+        <bind name="alpha" value="(!is_alive)?0.7:1"/>
+            
+        <bind name="watchDH" value="'player'; ['playerInfo.player.evChanged']; playerInfo.player.playerInfo"/>
+        <bind name="watchDH" value="'mute'; ['playerInfo.avatar.evMuteChanged']; playerInfo.avatar.mute"/>
+            
+        <bind name="style" value="'hitTest'; true"/>
+        <bind name="tooltip" value="'ML_MouseInstructionTooltip'; { _mouseInstructions: [{_type: 'left', _instructionText: 'IDS_HELP_DEAD_AHEAD_CAMERA'}, {_type: 'right', _instructionText: 'IDS_HINT_CLICK_TO_COMPLAIN'}], _maxWidth: 250}"/>
+        <bind name="menu" value="'ML_ComplaintMenu'; { _nickname: player.name, _mute: mute, _playerId: player.id, _isInSameDivision: isInSameDivision, _battleType: gameInfo.battleType }; null; 'contextMenuVisible'"/>
+        <bind name="dispatch" value="'buttonClick'; 'Tooltip.Close'; {}"/>
+        <bind name="name" value="'contextMenuVisible_' + !!(contextMenuVisible) + '_' + avatar.name"/>
+            
+        <style>
+            <marginBottom value="1px"/>
+            <flow value="horizontal"/>
+            <height value="22px"/>
+        </style>
+        
+    </block>
+    
+    <block className="ML_RowRendererRight">            
+        <bind name="entityDH" value="'playerInfo'; id"/>
+        <bind name="watchDH" value="'is_self'; ['playerInfo.relation.evChanged']; playerInfo.relation.value == 0"/>
+        <bind name="watchDH" value="'is_alive'; ['playerInfo.avatar.evKilled']; playerInfo.avatar.isAlive"/>
+        <bind name="watchDH" value="'tkStatus'; ['playerInfo.avatar.evTeamkillStatusChanged']; playerInfo.avatar.tkStatus"/>
+        <bind name="watchDH" value="'isInSameDivision'; ['playerInfo.avatar.evDivisionChanged']; playerInfo.avatar.isInSameDivision"/>
+        <bind name="watchDH" value="'division'; ['playerInfo.avatar.evDivisionChanged']; playerInfo.avatar.division"/>
+        <bind name="watchDH" value="'divisionSign'; ['playerInfo.avatar.evDivisionChanged']; playerInfo.avatar.divisionSign"/>
+        <bind name="watchDH" value="'statistics'; ['playerInfo.statistics.evChanged']; playerInfo.statistics.statistics"/>
+        
+        
+        <bind name="clickSplit"/> <!-- for left_click -->
+        <bind name="call" value="'left_click'; 'camera.moveCameraToPlayer'; playerInfo.avatar.id"/>
+        
+        <bind name="var" value="{healthP:'100%'}"/>
+        <bind name="watchDH" value="'healthP'; ['playerInfo.health.evValueChanged']; (((playerInfo.health.value > 0) &amp;&amp; is_alive) ? ((100 * playerInfo.health.value / playerInfo.health.max) + '%'): ( is_alive ? healthP: '0%'))"/>
+        <bind name="dataRefDH" value="'ship'; 'playerInfo.avatar.ship.ref.ship'"/>
+            
+        <block className="HealthRowHolder">
+            <style>
+                <width value="100%"/>
+                <height value="100%"/>
+                <position value="absolute"/>
+            </style>
+            <bind name="style" value="'marginRight'; (showStatistics &amp;&amp; statistics.real_data) ? '90px' : '20px'"/>
+            
+            <style>
+                <width value="100%"/>
+                <height value="100%"/>
+                <blurFilter value="2 2"/>
+                <position value="absolute"/>
+                <align value="right"/>
+                <left value="100%"/>
+            </style>
+            <bind name="scaleX" value="-1"/>
+            <bind name="style" value="'width'; healthP"/>
+            <bind name="style" value="'backgroundColor'; '0x4032CD32'"/>
+        </block>
+        
+        <bind name="style" value="'marginLeft'; (showStatistics &amp;&amp; statistics.real_data) ? '0' : '70px'"/>
+            
+        <bind name="var" value="{wasVisible:false}"/>
+        <bind name="watchDH" value="'visible'; ['playerInfo.visibility.evChanged']; playerInfo.visibility.visible"/>
+        <bind name="watchDH" value="'wasVisible'; ['playerInfo.visibility.evChanged']; playerInfo.visibility.visible || wasVisible "/>
+            
+        <block type="text">
+            <style>
+                <textColor value="0xFF0404"/>
+                <marginRight value="5px"/>
+                <width value="30px"/>
+                <dropShadowFilter value="1 90 0x08222a 0.7 2.0 2.0 1.0 2"/>
+            </style>
+            
+            <styleClass value="$FontSizeML"/>
+            <bind name="class" value="'$Bold'"/>
+            <bind name="style" value="'textColor'; ('0x'+statistics.all_wins_color)"/>
+            <bind name="text" value="statistics.all_wins + '%'"/>
+            <bind name="visible" value="showStatistics &amp;&amp; statistics.real_data"/>
+        </block>
+        
+        <block type="text">
+            <bind name="text" value="statistics.all_rate"/>
+            <bind name="style" value="'textColor'; ('0x'+statistics.all_rate_color)"/>
+            <bind name="visible" value="showStatistics &amp;&amp; statistics.real_data"/>
+            <bind name="class" value="'$Bold'"/>
+            
+            <styleClass value="$FontSizeML"/>
+            <style>
+                <marginRight value="5px"/>
+                <width value="30px"/>
+                <dropShadowFilter value="1 90 0x08222a 0.7 2.0 2.0 1.0 2"/>
+            </style>
+        </block>
+            
+            
+        <block type="text">
+            <bind name="text" value="'A'"/>
+            <styleClass value="$TextDefault"/>
+            <bind name="style" value="'textColor'; visible ? '0xDDffa500': '0xDDcccccc'"/>
+            <bind name="scaleY" value="(wasVisible &amp;&amp; is_alive) ? 1 : 0"/>
+            
+            <style>
+                <width value="20"/>
+                <fontFamily value="ML_WOWSSymbol"/>
+                <marginRight value="5px"/>
+                <fontSize value="18"/>
+            </style>
+        </block>
+            
+        <bind name="watchDH" value="'frags'; ['playerInfo.avatar.evFragsChanged']; playerInfo.avatar.frags"/>
+        <block type="text">
+            <bind name="text" value="frags"/>
+            <styleClass value="$FontSizeML"/>
+            
+            <bind name="class" value="is_alive 	? (tkStatus	? '$FontColorTeamkiller': is_self || isInSameDivision ? '$FontColorGolden': '$None'): '$FontColorDead'"/>
+            
+            <style>
+                <width value="15px"/>
+                <marginRight value="5px"/>
+            </style>
+        </block>
+            
+        <block type="text">
+            <bind name="text" value="ship.subtype=='Destroyer'?'&#x37;':ship.subtype=='Cruiser'?'&#x36;':ship.subtype=='Battleship'?'&#x35;':'&#x34;'"/>
+            <styleClass value="$TextDefault"/>
+            <bind name="class" value="is_alive 	? (tkStatus	? '$FontColorTeamkiller': is_self || isInSameDivision ? '$FontColorGolden': '$None'): '$FontColorDead'"/>
+            
+            <style>
+                <width value="20"/>
+                <fontFamily value="ML_WOWSSymbol"/>
+                <marginRight value="5px"/>
+            </style>
+        </block>
+            
+         <block type="text">
+            <bind name="text" value="ship.levelRome"/>
+            <styleClass value="$FontSizeML"/>
+            
+            <bind name="class" value="is_alive 	? (tkStatus	? '$FontColorTeamkiller': is_self || isInSameDivision ? '$FontColorGolden': '$None'): '$FontColorDead'"/>
+            
+            <style>
+                <width value="20px"/>
+                <marginRight value="5px"/>
+            </style>
+        </block>
+        
+            
+        <block type="text">
+            <bind name="text" value="ship.nameUpper"/>
+            <styleClass value="$FontSizeML"/>
+            <bind name="class" value="'$Bold'"/>
+            
+            <bind name="class" value="is_alive 	? (tkStatus	? '$FontColorTeamkiller': is_self || isInSameDivision ? '$FontColorGolden': '$None'): '$FontColorDead'"/>
+            
+            <style>
+                <width value="65px"/>
+                <marginRight value="5px"/>
+                <align value="right"/>
+            </style>
+        </block>
+        
+        <block type="text">
+            <bind name="text" value="playerInfo.avatar.name"/>
+            <bind name="visible" value="earIndex"/>
+            <styleClass value="$FontSizeML"/>
+            
+            <bind name="class" value="is_alive 	? (tkStatus	? '$FontColorTeamkiller': is_self || isInSameDivision ? '$FontColorGolden': '$None'): '$FontColorDead'"/>
+            
+            <style>
+                <width value="55px"/>
+                <marginRight value="10px"/>
+            </style>
+        </block>   
+            
+            
+        <block>
+            <styleClass value="$MiddleVAligned"/>
+            <style>
+                <width value="25px"/> 
+            </style>
+            <block className="division_item" type="native">
+                <bind name="visible" value="division &gt; 0"/>
+                <styleClass value="$MiddleAligned"/>
+                <style>
+                    <top value="2px"/>
+                </style>
+                <bind name="gotoAndStop!" value="isInSameDivision ? divisionSign + 1 : divisionSign + 1 + 10"/>
+            </block>
+        </block>
+            
+        
+        <bind name="visible" value="is_alive ? true: deadEnabled"/>
+        <bind name="alpha" value="(!is_alive)?0.7:1"/>
+            
+        <bind name="watchDH" value="'player'; ['playerInfo.player.evChanged']; playerInfo.player.playerInfo"/>
+        <bind name="watchDH" value="'mute'; ['playerInfo.avatar.evMuteChanged']; playerInfo.avatar.mute"/>
+            
+        <bind name="style" value="'hitTest'; true"/>
+        <bind name="tooltip" value="'ML_MouseInstructionTooltip'; { _mouseInstructions: [{_type: 'right', _instructionText: 'IDS_HINT_CLICK_TO_COMPLAIN'}], _maxWidth: 250}"/>
+        <bind name="menu" value="'ML_ComplaintMenu'; { _nickname: player.name, _mute: mute, _playerId: player.id, _isInSameDivision: isInSameDivision, _battleType: gameInfo.battleType }; null; 'contextMenuVisible'"/>
+        <bind name="dispatch" value="'buttonClick'; 'Tooltip.Close'; {}"/>
+        <bind name="name" value="'contextMenuVisible_' + !!(contextMenuVisible) + '_' + avatar.name"/>
+            
+        <style>
+            <marginBottom value="1px"/>
+            <flow value="horizontal"/>
+			<align value="right"/>
+            <height value="22px"/>
+        </style>        
+    </block>
+    
+    
+    <!-- MENU -->
+     <block className="ML_ComplaintMenu">
+		<bind name="controller" value="lesta.unbound.core.UbController"/>
+		<bind name="controller" value="lesta.dialogs.controllers.EntitySingletonController; 'evaluationLimits'"/>
+		<styleClass value="$DefaultMenuBehaviour"/>
+		<styleClass value="$ContextMenuDimentions"/>
+		<block>
+			<styleClass value="$FullsizeAbsolute"/>
+			<bind name="instance" value="'ML_MenuTooltipBackground'; {_isInBattle : (_nickname!=null)}"/>
+		</block>
+		<block>
+			<style>
+				<width value="100%"/>
+			</style>
+			<bind name="class" value="true ? '$ComplaintMenuListItemBattleMargins' : '$ComplaintMenuListItemPostbarrleMargins'"/>
+			<block>
+				<bind name="name" value="'id_complain'"/>
+				<styleClass value="$ContextMenuListItem"/>
+				<block className="MenuItem">
+					<styleClass value="$Fullsize"/>
+					<block className="dock_submenu_item" type="native">
+						<styleClass value="$FullsizeAbsolute"/>
+					</block>
+					<block type="text">
+						<styleClass value="$TextDefault"/>
+						<styleClass value="$MiddleVAligned"/>
+						<styleClass value="$ContextMenuListItemContent"/>
+						<bind name="text" value="'IDS_COMPLAIN'"/>
+					</block>
+				</block>
+				<block className="button_expand_h" type="native">
+					<style>
+						<position value="absolute"/>
+						<right value="6px"/>
+					</style>
+					<styleClass value="$MouseDisable"/>
+					<styleClass value="$MiddleVAligned"/>
+				</block>
+				<bind name="tooltip" value="'ML_ComplaintSubMenu'; {_player: _player, _nickname: _nickname, arenaId: arenaId, _battleType: _battleType, _isInSameDivision: _isInSameDivision}; TooltipBehaviour.submenu"/>
+			</block>
+			<block>
+				<bind name="name" value="'id_praise'"/>
+				<styleClass value="$ContextMenuListItem"/>
+				<block className="MenuItem">
+					<styleClass value="$Fullsize"/>
+					<block className="dock_submenu_item" type="native">
+						<styleClass value="$FullsizeAbsolute"/>
+					</block>
+					<block type="text">
+						<styleClass value="$TextDefault"/>
+						<styleClass value="$MiddleVAligned"/>
+						<styleClass value="$ContextMenuListItemContent"/>
+						<bind name="text" value="'IDS_PRAISE'"/>
+					</block>
+				</block>
+				<block className="button_expand_h" type="native">
+					<style>
+						<position value="absolute"/>
+						<right value="6px"/>
+					</style>
+					<styleClass value="$MouseDisable"/>
+					<styleClass value="$MiddleVAligned"/>
+				</block>
+				<bind name="tooltip" value="'ML_PraiseSubMenu'; {_player: _player, _nickname: _nickname, arenaId: arenaId, _battleType: _battleType, _isInSameDivision: _isInSameDivision}; TooltipBehaviour.submenu"/>
+			</block>
+			<block>
+				<bind name="name" value="'id_mute'"/>
+				<bind name="visible" value="!_isInBattleStats"/>
+				<styleClass value="$ContextMenuListItem"/>
+				<block>
+					<styleClass value="$Fullsize"/>
+					<block className="dock_submenu_item" type="native">
+						<styleClass value="$FullsizeAbsolute"/>
+					</block>
+				</block>
+				<block>
+					<style>
+						<hitTest value="false"/>
+					</style>
+					<styleClass value="$FullsizeAbsolute"/>
+					<block>
+						<style>
+							<width value="24px"/>
+							<height value="100%"/>
+						</style>
+						<block className="button_mute" type="native">
+							<style>
+								<marginLeft value="4px"/>
+								<marginTop value="6px"/>
+							</style>
+							<bind name="gotoAndStop!" value="_mute ? 'selected_up' : 'selected_over'"/>
+						</block>
+					</block>
+					<block type="text">
+						<style>
+							<marginLeft value="5px"/>
+						</style>
+						<styleClass value="$TextDefault"/>
+						<styleClass value="$MiddleVAligned"/>
+						<bind name="text" value="_mute ? 'IDS_UNMUTE' : 'IDS_MUTE'"/>
+					</block>
+					<style>
+						<flow value="horizontal"/>
+					</style>
+				</block>
+				<bind name="action" value="'buttonClick'; _mute ? 'unmuteUser' : 'muteUser'; {id: _playerId}"/>
+			</block>
+		</block>
+	</block>
+    
+    <block className="ML_ComplaintSubMenu">
+		<bind name="controller" value="lesta.dialogs.controllers.EntitySingletonController; 'evaluationLimits'"/>
+		<styleClass value="$DefaultMenuBehaviour"/>
+		<style>
+			<width value="270px"/>
+		</style>
+		<bind name="watch" value="'isEvaluationDisabledReason';	(_battleType == BattleTypes.CLUB_BATTLE)	? 'IDS_COMPLAIN_DISABLED_FOR_CLUB_BATTLES' :
+											(_battleType == BattleTypes.TRAINING_BATTLE)	? 'IDS_CUSTOM_ROOM' :
+														 evaluationLimits.complain == 0 	? 'IDS_DAY_LIMIT_IS_OFF' :
+																		_isInSameDivision 	? 'IDS_COMPLAIN_DISABLED_FOR_DIVISION_MEMBERS'
+																							: false"/>
+		<block>
+			<styleClass value="$FullsizeAbsolute"/>
+			<bind name="instance" value="'ML_MenuTooltipBackground'; {_isInBattle : (_nickname != null)}"/>
+		</block>
+		<block>
+			<style>
+				<width value="100%"/>
+			</style>
+			<bind name="class" value="(_nickname!=null) ? '$ComplaintMenuListItemBattleMargins' : '$ComplaintMenuListItemPostbarrleMargins'"/>
+			<block>
+				<bind name="name" value="'id_complain_bot'"/>
+				<bind name="style" value="'alpha'; isEvaluationDisabledReason ? 0.5 : 1"/>
+				<styleClass value="$ContextMenuListItem"/>
+				<bind name="action" value="'buttonClick'; 'sendEvaluation'; (_nickname != null) 	? {type: EvaluationType.DENUNCIATION, topic: EvaluationTopic.BOT, nickname: _nickname, arenaId: arenaId}
+																				: {type: EvaluationType.DENUNCIATION, topic: EvaluationTopic.BOT, accountDBID: _player.dbId, relation: _player.relation, arenaId: arenaId}"/>
+				<block className="dock_submenu_item" type="native">
+					<bind name="style" value="'hitTest'; isEvaluationDisabledReason ? false : true"/>
+					<styleClass value="$FullsizeAbsolute"/>
+				</block>
+				<block type="text">
+					<styleClass value="$TextDefault"/>
+					<styleClass value="$MiddleVAligned"/>
+					<style>
+						<maxWidth value="252"/>
+						<marginLeft value="6px"/>
+					</style>
+					<text value="IDS_BOT"/>
+				</block>
+			</block>
+			<block>
+				<bind name="name" value="'id_complain_bad_player'"/>
+				<bind name="style" value="'alpha'; isEvaluationDisabledReason ? 0.5 : 1"/>
+				<styleClass value="$ContextMenuListItem"/>
+				<bind name="action" value="'buttonClick'; 'sendEvaluation'; (_nickname != null) 	? {type: EvaluationType.DENUNCIATION, topic: EvaluationTopic.PLAY, nickname: _nickname, arenaId: arenaId}
+																				: {type: EvaluationType.DENUNCIATION, topic: EvaluationTopic.PLAY, accountDBID: _player.dbId, relation: _player.relation, arenaId: arenaId}"/>
+				<block className="dock_submenu_item" type="native">
+					<bind name="style" value="'hitTest'; isEvaluationDisabledReason ? false : true"/>
+					<styleClass value="$FullsizeAbsolute"/>
+				</block>
+				<block type="text">
+					<styleClass value="$TextDefault"/>
+					<styleClass value="$MiddleVAligned"/>
+					<style>
+						<maxWidth value="252"/>
+						<marginLeft value="6px"/>
+					</style>
+					<text value="IDS_BAD_PLAYER"/>
+				</block>
+			</block>
+			<block>
+				<bind name="name" value="'id_complain_bad_behaviour'"/>
+				<bind name="style" value="'alpha'; isEvaluationDisabledReason ? 0.5 : 1"/>
+				<styleClass value="$ContextMenuListItem"/>
+				<bind name="action" value="'buttonClick'; 'sendEvaluation'; (_nickname != null) 	? {type: EvaluationType.DENUNCIATION, topic: EvaluationTopic.CHAT, nickname: _nickname, arenaId: arenaId}
+																				: {type: EvaluationType.DENUNCIATION, topic: EvaluationTopic.CHAT, accountDBID: _player.dbId, relation: _player.relation, arenaId: arenaId}"/>
+				<block className="dock_submenu_item" type="native">
+					<bind name="style" value="'hitTest'; isEvaluationDisabledReason ? false : true"/>
+					<styleClass value="$FullsizeAbsolute"/>
+				</block>
+				<block type="text">
+					<styleClass value="$TextDefault"/>
+					<styleClass value="$MiddleVAligned"/>
+					<style>
+						<maxWidth value="252"/>
+						<marginLeft value="6px"/>
+					</style>
+					<text value="IDS_BAD_BEHAVIOUR"/>
+				</block>
+			</block>
+		</block>
+		<block>
+			<bind name="name" value="'id_complain_day_limit'"/>
+			<bind name="visible" value="evaluationLimits.complain &gt; 0 &amp;&amp; !isEvaluationDisabledReason"/>
+			<style>
+				<marginLeft value="9px"/>
+				<marginBottom value="6px"/>
+			</style>
+			<block className="icon_warning_orange" type="native">
+				<style>
+					<marginTop value="4px"/>
+				</style>
+			</block>
+			<block type="text">
+				<styleClass value="$TextDefault"/>
+				<bind name="class" value="'$FontColorUnready'"/>
+				<style>
+					<maxWidth value="252"/>
+					<marginLeft value="1px"/>
+				</style>
+				<bind name="text" value="tr('IDS_DAY_LIMIT') + ' ' + evaluationLimits.complain"/>
+			</block>
+			<style>
+				<flow value="horizontal"/>
+			</style>
+		</block>
+		<block>
+			<bind name="visible" value="isEvaluationDisabledReason"/>
+			<style>
+				<marginLeft value="9px"/>
+				<marginBottom value="6px"/>
+			</style>
+			<block className="icon_warning_red" type="native">
+				<style>
+					<marginTop value="4px"/>
+				</style>
+			</block>
+			<block type="text">
+				<styleClass value="$TextDefault"/>
+				<bind name="class" value="'$FontColorCompareNegative'"/>
+				<style>
+					<maxWidth value="230"/>
+					<marginLeft value="1px"/>
+				</style>
+				<bind name="text" value="isEvaluationDisabledReason"/>
+			</block>
+			<style>
+				<flow value="horizontal"/>
+			</style>
+		</block>
+	</block>
+	<block className="ML_PraiseSubMenu">
+		<bind name="controller" value="lesta.dialogs.controllers.EntitySingletonController; 'evaluationLimits'"/>
+		<styleClass value="$DefaultMenuBehaviour"/>
+		<style>
+			<width value="270px"/>
+		</style>
+		<bind name="watch" value="'isEvaluationDisabledReason';	(_battleType == BattleTypes.CLUB_BATTLE)	? 'IDS_PRAISE_DISABLED_FOR_CLUB_BATTLES' :
+											(_battleType == BattleTypes.TRAINING_BATTLE)	? 'IDS_CUSTOM_ROOM' :
+															 evaluationLimits.praise == 0 	? 'IDS_DAY_LIMIT_IS_OFF' :
+																		_isInSameDivision 	? 'IDS_PRAISE_DISABLED_FOR_DIVISION_MEMBERS'
+																							: false"/>
+		<block>
+			<styleClass value="$FullsizeAbsolute"/>
+			<bind name="instance" value="'ML_MenuTooltipBackground'; {_isInBattle : false}"/>
+		</block>
+		<block>
+			<style>
+				<width value="100%"/>
+			</style>
+			<bind name="class" value="(_nickname!=null) ? '$ComplaintMenuListItemBattleMargins' : '$ComplaintMenuListItemPostbarrleMargins'"/>
+			<block>
+				<bind name="name" value="'id_praise_good_player'"/>
+				<bind name="style" value="'alpha'; isEvaluationDisabledReason ? 0.5 : 1"/>
+				<bind name="action" value="'buttonClick'; 'sendEvaluation'; (_nickname != null) 	? {type: EvaluationType.PRAISE, topic: EvaluationTopic.PLAY, nickname: _nickname, arenaId: arenaId}
+																				: {type: EvaluationType.PRAISE, topic: EvaluationTopic.PLAY, accountDBID: _player.dbId, relation: _player.relation, arenaId: arenaId}"/>
+				<styleClass value="$ContextMenuListItem"/>
+				<block className="dock_submenu_item" type="native">
+					<bind name="style" value="'hitTest'; isEvaluationDisabledReason ? false : true"/>
+					<styleClass value="$FullsizeAbsolute"/>
+				</block>
+				<block type="text">
+					<styleClass value="$TextDefault"/>
+					<styleClass value="$MiddleVAligned"/>
+					<style>
+						<maxWidth value="252"/>
+						<marginLeft value="6px"/>
+					</style>
+					<text value="IDS_GOOD_PLAYER"/>
+				</block>
+			</block>
+			<block>
+				<bind name="name" value="'id_praise_helped_in_chat'"/>
+				<bind name="style" value="'alpha'; isEvaluationDisabledReason ? 0.5 : 1"/>
+				<bind name="action" value="'buttonClick'; 'sendEvaluation'; (_nickname != null) 	? {type: EvaluationType.PRAISE, topic: EvaluationTopic.CHAT, nickname: _nickname, arenaId: arenaId}
+																				: {type: EvaluationType.PRAISE, topic: EvaluationTopic.CHAT, accountDBID: _player.dbId, relation: _player.relation, arenaId: arenaId}"/>
+				<styleClass value="$ContextMenuListItem"/>
+				<block className="dock_submenu_item" type="native">
+					<bind name="style" value="'hitTest'; isEvaluationDisabledReason ? false : true"/>
+					<styleClass value="$FullsizeAbsolute"/>
+				</block>
+				<block type="text">
+					<styleClass value="$TextDefault"/>
+					<styleClass value="$MiddleVAligned"/>
+					<style>
+						<maxWidth value="252"/>
+						<marginLeft value="6px"/>
+					</style>
+					<text value="IDS_HELPED_IN_CHAT"/>
+				</block>
+			</block>
+		</block>
+		<block>
+			<bind name="name" value="'id_praise_day_limit'"/>
+			<bind name="visible" value="evaluationLimits.praise &gt; 0 &amp;&amp; !isEvaluationDisabledReason"/>
+			<style>
+				<marginLeft value="9px"/>
+				<marginBottom value="6px"/>
+			</style>
+			<block className="icon_warning_orange" type="native">
+				<style>
+					<marginTop value="4px"/>
+				</style>
+			</block>
+			<block type="text">
+				<styleClass value="$TextDefault"/>
+				<bind name="class" value="'$FontColorUnready'"/>
+				<style>
+					<maxWidth value="252"/>
+					<marginLeft value="1px"/>
+				</style>
+				<bind name="text" value="tr('IDS_DAY_LIMIT') + ' ' + evaluationLimits.praise"/>
+			</block>
+			<style>
+				<flow value="horizontal"/>
+			</style>
+		</block>
+		<block>
+			<bind name="visible" value="isEvaluationDisabledReason"/>
+			<style>
+				<marginLeft value="9px"/>
+				<marginBottom value="6px"/>
+			</style>
+			<block className="icon_warning_red" type="native">
+				<style>
+					<marginTop value="4px"/>
+				</style>
+			</block>
+			<block type="text">
+				<styleClass value="$TextDefault"/>
+				<bind name="class" value="'$FontColorCompareNegative'"/>
+				<style>
+					<maxWidth value="230"/>
+					<marginLeft value="1px"/>
+				</style>
+				<bind name="text" value="isEvaluationDisabledReason"/>
+			</block>
+			<style>
+				<flow value="horizontal"/>
+			</style>
+		</block>
+	</block>
+    
+    <block className="ML_MenuTooltipBackground">
+		<styleClass value="$FullsizeAbsolute"/>
+		<bind name="controller" value="lesta.dialogs.controllers.EntitySingletonController; 'optionData'"/>
+		<block className="contrast_panel" type="native">
+			<styleClass value="$FullsizeAbsolute"/>
+			<bind name="visible" value="true"/>
+			<style>
+				<marginTop value="-2px"/>
+				<marginBottom value="-2px"/>
+			</style>
+		</block>
+		<block>
+			<styleClass value="$FullsizeAbsolute"/>
+			<bind name="visible" value="!(_isInBattle)"/>
+			<style>
+				<marginTop value="-1px"/>
+				<marginBottom value="-1px"/>
+			</style>
+			<block className="hint_panel" type="native">
+				<styleClass value="$FullsizeAbsolute"/>
+			</block>
+		</block>
+	</block>
+            
+    <block className="ML_MouseInstructionTooltip">
+		<styleClass value="$DefaultTooltipBehaviour"/>
+		<block>
+			<styleClass value="$FullsizeAbsolute"/>
+			<bind name="instance" value="'ML_TooltipBackground'; {_isInBattle: _isInBattle}"/>
+		</block>
+		<block>
+			<bind name="visible" value="_multiParagraphArray.length &gt; 0"/>
+			<styleClass value="$InfoBlockHorizontalIndentNoWidth"/>
+			<style>
+				<marginTop value="9px"/>
+			</style>
+			<bind name="style" value="'marginBottom'; (_multiParagraphArray.length &gt; 0) &amp;&amp; (_mouseInstructions.length &gt; 0) ? '0px' : '5px'"/>
+			<bind name="repeat" value="_multiParagraphArray; 'RepeatParagraphItem'; {_maxWidth: _maxWidth, _marginBottom: _marginBottom}"/>
+		</block>
+		<block>
+			<bind name="visible" value="(_multiParagraphArray.length &gt; 0) &amp;&amp; (_mouseInstructions.length &gt; 0)"/>
+			<style>
+				<width value="100%"/>
+			</style>
+			<block className="HorizontalDivider">
+				<styleClass value="$PxHorizontalCorrection"/>
+				<style>
+					<width value="100%"/>
+					<height value="3px"/>
+				</style>
+				<block className="divider_h" type="native">
+					<styleClass value="$Fullsize"/>
+				</block>
+			</block>
+		</block>
+		<block>
+			<bind name="visible" value="_mouseInstructions.length &gt; 0"/>
+			<styleClass value="$InfoBlockIndentNoWidth"/>
+			<bind name="repeat" value="_mouseInstructions; 'MouseInstructionRepeater'; {_maxWidth: _maxWidth, _lastIndex: _mouseInstructions.length - 1}"/>
+		</block>
+	</block>
+            
+    <block className="ML_TooltipBackground">
+		<styleClass value="$FullsizeAbsolute"/>
+		<bind name="controller" value="lesta.dialogs.controllers.EntitySingletonController; 'optionData'"/>
+		<block className="contrast_panel" type="native">
+			<styleClass value="$FullsizeAbsolute"/>
+			<bind name="visible" value="true"/>
+		</block>
+		<block>
+			<styleClass value="$FullsizeAbsolute"/>
+			<bind name="visible" value="!(_isInBattle)"/>
+			<block className="hint_panel" type="native">
+				<styleClass value="$FullsizeAbsolute"/>
+			</block>
+		</block>
+	</block>
+</ui>
