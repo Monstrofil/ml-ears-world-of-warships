@@ -24,28 +24,23 @@ package
         public function ShipHealthIndicator() 
         {
            super();
-           
-            var loader:Loader = new Loader();
-            var req:URLRequest = new URLRequest("ship_state.swf");
-            loader.contentLoaderInfo.addEventListener(Event.COMPLETE, this.fooLoadComplete);
-            loader.load(req);
             
             this._hpData.hp = 200;
             this._hpData.regValue = 200;
             this._hpData.maximum = 200;
+            
+            this.init();
         }
         
-        private function fooLoadComplete(e:Event):void
+        private function init():void
         {
             var ClassDefinition:Class = e.target.applicationDomain.getDefinition("CustomBar") as Class;
             shipHealthIndicator = new ClassDefinition();
-                
             shipHealthIndicator.type = "health";
             shipHealthIndicator.isAlive = true;
-            shipHealthIndicator.shipName = "PASC007";
             shipHealthIndicator.updateHP(_hpData);
             
-            //shipHealthIndicator.scaleX = shipHealthIndicator.scaleY = 0.4;
+            shipHealthIndicator.scaleX = shipHealthIndicator.scaleY = 0.4;
 
             this.addChild(shipHealthIndicator);
         }
@@ -83,6 +78,18 @@ package
            
            if(shipHealthIndicator)
             shipHealthIndicator.updateHP(_hpData);
+        }
+        
+        public function set shipname(value:String) {
+           shipHealthIndicator.shipName = value;
+        }
+        
+        public function set scale_x(value:Number) {
+           shipHealthIndicator.scaleX = value;
+        }
+        
+        public function set scale_y(value:Number) {
+           shipHealthIndicator.scaleY = value;
         }
         
     }
