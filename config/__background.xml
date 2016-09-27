@@ -64,7 +64,10 @@
     </block>
     
     
-    <block className="ML_RowRendererLeft">         
+    <block className="ML_RowRendererLeft">       
+        <block type="native" value="ShipHealthIndicator">
+            
+        </block>
         <bind name="entityDH" value="'playerInfo'; id"/>
         <bind name="watchDH" value="'is_self'; ['playerInfo.relation.evChanged']; playerInfo.relation.value == 0"/>
         <bind name="watchDH" value="'is_alive'; ['playerInfo.avatar.evKilled']; playerInfo.avatar.isAlive"/>
