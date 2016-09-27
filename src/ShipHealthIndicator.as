@@ -56,7 +56,11 @@ package
         
         public function set health(value:int) {
            this._hpData.hp = value;
-           shipHealthIndicator.updateHP(_hpData);
+           
+           trace(value);
+
+           if(shipHealthIndicator)
+            shipHealthIndicator.updateHP(_hpData);
         }
         
         public function get regen() {
@@ -65,7 +69,9 @@ package
         
         public function set regen(value:int) {
            this._hpData.regValue = value; 
-           shipHealthIndicator.updateHP(_hpData);
+
+           if(shipHealthIndicator)
+            shipHealthIndicator.updateHP(_hpData);        
         }
         
         public function get maxhealth() {
@@ -74,7 +80,9 @@ package
         
         public function set maxhealth(value:int) {
            this._hpData.maximum = value; 
-           shipHealthIndicator.updateHP(_hpData);
+           
+           if(shipHealthIndicator)
+            shipHealthIndicator.updateHP(_hpData);
         }
         
     }
