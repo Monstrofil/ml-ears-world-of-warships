@@ -26,7 +26,7 @@ package
            super();
             
             this._hpData.hp = 200;
-            this._hpData.regValue = 200;
+            this._hpData.regValue = 0;
             this._hpData.maximum = 200;
             
             this.init();
