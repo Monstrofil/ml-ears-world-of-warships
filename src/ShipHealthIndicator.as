@@ -7,7 +7,7 @@ package
     import flash.events.UncaughtErrorEvent;
     import flash.events.Event;
     import flash.utils.Timer;
-
+    import flash.system.ApplicationDomain;
     import flash.net.URLRequest;
     import lesta.dialogs.battle_window._modules_panel.HPData;
 	import lesta.dialogs.battle_window._modules_panel.ShipStatusIndicator;
@@ -34,7 +34,7 @@ package
         
         private function init():void
         {
-            var ClassDefinition:Class = e.target.applicationDomain.getDefinition("CustomBar") as Class;
+            var ClassDefinition:Class = ApplicationDomain.currentDomain.getDefinition("CustomBar") as Class;
             shipHealthIndicator = new ClassDefinition();
             shipHealthIndicator.type = "health";
             shipHealthIndicator.isAlive = true;
