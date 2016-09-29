@@ -37,7 +37,7 @@ def workWithNodeList(nodeList):
                 writeXML(element, prefix % postfix)
 
                 fileref = doc.createElement("xmlpath")
-                fileref.setAttribute("value", outRoot.replace('bin/', '') + prefix % postfix)
+                fileref.setAttribute("value", outRoot[outRoot.index('flash') + 6:] + prefix % postfix)
                 
                 element.parentNode.insertBefore(fileref, element)
                 element.parentNode.removeChild(element)
