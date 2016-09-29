@@ -11,3 +11,5 @@ mkdir -p $BUILD_DIR
 python file_divide.py config/__background.xml $BUILD_DIR/ root_block
 
 /home/monstrofil/dev/flash/signIt.sh $PWD/$BUILD_DIR/../
+
+python update_game_files.py
