@@ -27,6 +27,8 @@
     </css>
     
     <block className="root_block">
+        <bind name="instance" value="'FragsHeader'; {}"/>
+        
         <bind name="watch" value="'indexEars'; (userPrefs.elementsGroupExpand.indexEars == null) ? false : userPrefs.elementsGroupExpand.indexEars"/>
         <bind name="controller" value="MLControllers.MLEntitiesController"/>        
         
@@ -858,5 +860,35 @@
 				<styleClass value="$FullsizeAbsolute"/>
 			</block>
 		</block>
+	</block>
+    
+    <block className="FragsHeader">
+		<!--
+			Block with teamScore (at the top of the screen)
+			
+			Internal variables:
+			_fragsEnabled: is this block visible;
+		-->
+		<bind name="controller" value="lesta.dialogs.controllers.EntitySingletonController; 'gameInfo'"/>
+		<block type="text">
+			<bind name="class" value="'$TextHeaderLargeBold'"/>
+			<bind name="text" value="gameInfo.alliedFrags"/>
+		</block>
+		
+		<block type="text">
+			<bind name="class" value="'$TextHeaderLargeBold'"/>
+			<bind name="text" value="':'"/>
+		</block>
+		
+		<block type="text">
+			<bind name="class" value="'$TextHeaderLargeBold'"/>
+			<bind name="text" value="gameInfo.enemyFrags"/>
+		</block>
+		
+		<style>
+			<flow value="horizontal"/>
+			<top value="3px"/>
+		</style>
+		<styleClass value="$MiddleAligned"/>
 	</block>
 </ui>
