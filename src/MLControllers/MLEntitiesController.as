@@ -26,13 +26,14 @@ package MLControllers
         {
             super();
         }
-        
+        private var teamCollection:Collection = null;
+        private var enemyCollection:Collection = null;
         public override function init(arg1:Vector.<IUbExpression>):void
         {
             super.init(arg1);
             var collection:Collection = MLDatahubController.xvmDataHub.getCollection(ComponentClass.avatar).child("team");
-            var teamCollection:Collection = collection.child(true).child("sortedAlive");
-            var enemyCollection:Collection = collection.child(false).child("sortedAlive");
+            this.teamCollection = collection.child(true).child("sortedAlive");
+            this.enemyCollection = collection.child(false).child("sortedAlive");
             
             for each(var e:Entity in teamCollection.items) {
                e.addComponent(MLWebInfoHolder.instance.getStatisticsComponent(e.avatar.name)); 
@@ -74,9 +75,11 @@ package MLControllers
             
             teamCollection.evMoved.addCallback(function():void {
                 updateInScope("team");
+                 scope.team = teamCollection.items;
             });
             enemyCollection.evMoved.addCallback(function():void {
                 updateInScope("enemy");
+                scope.enemy = enemyCollection.items;
             });
             
         }
