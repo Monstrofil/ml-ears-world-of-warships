@@ -43,7 +43,7 @@ package MLControllers
         }
         
         private function onTick(...rest):void {
-            scope.target = GameInfoHolder.instance.selfPlayer.currentAttackedTarget;
+            scope.target = GameInfoHolder.instance.selfPlayer.ьб псч    фго;
         }
     }
 

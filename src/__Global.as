@@ -10,6 +10,7 @@ package
     import com.adobe.images.JPGEncoder;
     import com.adobe.images.PNGEncoder;
     import MLControllers.MLEntitiesController;
+    import ShipHealthIndicator;
 	public class __Global 
 	{
         public var _MLEarsApplication:MLEarsApplication;
@@ -17,6 +18,7 @@ package
         public var _com_adobe_images_BitString:com.adobe.images.BitString;
         public var _com_adobe_images_JPGEncoder:com.adobe.images.JPGEncoder;
         public var _com_adobe_images_PNGEncoder:com.adobe.images.PNGEncoder;
+        public var ttt:ShipHealthIndicator;
         public var _MLControllers_MLEntitiesController:MLControllers.MLEntitiesController;
 		public function __Global() 
 		{

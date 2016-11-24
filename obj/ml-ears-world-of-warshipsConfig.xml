@@ -16,7 +16,7 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'25.09.2016'</value>
+      <value>'20.11.2016'</value>
     </define>
     <define append="true">
       <name>CONFIG::air</name>
@@ -37,11 +37,11 @@
     </source-path>
     <external-library-path append="true" />
     <library-path append="true">
-      <path-element>D:\_develop_\ml-ears-world-of-warships\lib\wows_library.swc</path-element>
-      <path-element>D:\_develop_\ml-ears-world-of-warships\lib\ml-as3-xml-divider.swc</path-element>
-      <path-element>D:\_develop_\ml-ears-world-of-warships\lib\ml-unbound-application.swc</path-element>
-      <path-element>D:\_develop_\ml-ears-world-of-warships\lib\Console.swc</path-element>
       <path-element>D:\_develop_\ml-ears-world-of-warships\lib\framework.swc</path-element>
+      <path-element>D:\_develop_\ml-ears-world-of-warships\lib\Console.swc</path-element>
+      <path-element>D:\_develop_\ml-ears-world-of-warships\lib\xml-as3-xml-divider.swc</path-element>
+      <path-element>D:\_develop_\ml-ears-world-of-warships\lib\xml-unbound-application.swc</path-element>
+      <path-element>D:\_develop_\ml-ears-world-of-warships\lib\wows_library.swc</path-element>
     </library-path>
   </compiler>
   <file-specs>

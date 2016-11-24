@@ -52,11 +52,11 @@
   </includeLibraries>
   <!-- SWC Libraries -->
   <libraryPaths>
-    <element path="lib\wows_library.swc" />
-    <element path="lib\ml-as3-xml-divider.swc" />
-    <element path="lib\ml-unbound-application.swc" />
-    <element path="lib\Console.swc" />
     <element path="lib\framework.swc" />
+    <element path="lib\Console.swc" />
+    <element path="lib\xml-as3-xml-divider.swc" />
+    <element path="lib\xml-unbound-application.swc" />
+    <element path="lib\wows_library.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>
@@ -83,9 +83,7 @@
     <hidden path="obj" />
   </hiddenPaths>
   <!-- Executed before build -->
-  <preBuildCommand>python file_divide.py config/__background.xml bin/$(ProjectName)/ root_block
-
-python prebuild.py</preBuildCommand>
+  <preBuildCommand />
   <!-- Executed after build -->
   <postBuildCommand alwaysRun="False" />
   <!-- Other project options -->

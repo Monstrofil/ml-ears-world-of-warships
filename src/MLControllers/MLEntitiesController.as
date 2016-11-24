@@ -1,5 +1,6 @@
 package MLControllers 
 {
+    import com.junkbyte.console.Cc;
     import lesta.components.Avatar;
     import lesta.constants.ComponentClass;
     import lesta.datahub.Collection;
@@ -26,15 +27,19 @@ package MLControllers
         {
             super();
         }
-        
+        private var teamCollection:Collection = null;
+        private var enemyCollection:Collection = null;
         public override function init(arg1:Vector.<IUbExpression>):void
         {
             super.init(arg1);
-            var collection:Collection = MLDatahubController.xvmDataHub.getCollection(ComponentClass.avatar).child("team");
-            var teamCollection:Collection = collection.child(true).child("sortedAlive");
-            var enemyCollection:Collection = collection.child(false).child("sortedAlive");
+            var collection:Collection = MLDatahubController.xvmDataHub.getCollection(ComponentClass.avatar);
+            this.teamCollection = collection.getChildByPath("team.ally.sortedAlive");
+            this.enemyCollection = collection.getChildByPath("team.enemy.sortedAlive");
             
-            for each(var e:Entity in teamCollection.items) {
+            trace(this.enemyCollection.items);
+            
+            
+            for each(var e:Entity in this.teamCollection.items) {
                e.addComponent(MLWebInfoHolder.instance.getStatisticsComponent(e.avatar.name)); 
                for each(var player:Player in GameInfoHolder.instance.listAlliedPlayers)
                {
@@ -51,10 +56,9 @@ package MLControllers
                }
             }
             
-            for each(var e:Entity in enemyCollection.items) {
+            for each(var e:Entity in this.enemyCollection.items) {
                e.addComponent(MLWebInfoHolder.instance.getStatisticsComponent(e.avatar.name)); 
-               
-                for each(var player:Player in GameInfoHolder.instance.listEnemyPlayers)
+               for each(var player:Player in GameInfoHolder.instance.listAlliedPlayers)
                {
                     if (player.name == e.avatar.name) {
                         var shipInfo:MLShipInfo = new MLShipInfo();
@@ -68,17 +72,6 @@ package MLControllers
                     }
                }
             }
-            
-            scope.team = teamCollection.items;
-            scope.enemy = enemyCollection.items;
-            
-            teamCollection.evMoved.addCallback(function():void {
-                updateInScope("team");
-            });
-            enemyCollection.evMoved.addCallback(function():void {
-                updateInScope("enemy");
-            });
-            
         }
     }
 
